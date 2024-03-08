@@ -15,6 +15,7 @@ import org.springframework.util.StringUtils;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Service
@@ -111,6 +112,12 @@ public class MsgReplyRuleServiceImpl extends ServiceImpl<MsgReplyRuleMapper, Msg
      * @return
      */
     public static boolean isMatch(boolean exactMatch, String[] ruleWords, String checkWords) {
+
+        // 第一个正则匹配直接返回
+        if (Pattern.matches(ruleWords[0],checkWords)) {
+            return true;
+        }
+
         if (!StringUtils.hasText(checkWords)) {
             return false;
         }
