@@ -39,5 +39,14 @@
 ## [项目开发进度](https://www.yuque.com/nifury/wx/kens6d)
 ## [代码贡献指南](https://www.yuque.com/nifury/wx/ykqswi)
 
-## 开发交流
-QQ群：1023785886（已满）、993128490 技术交流群严禁广告，发广告立即踢出+拉黑+举报，加群密码：wx 
+## Q&A
+- redirect_uri 域名与后台配置不一致 10003 解决方案
+```
+1. 公众号配置后台-》接口配置信息修改 
+2. 公众号配置后台-》JS接口安全域名修改
+3. 公众号配置后台-》网页授权获取用户基本信息
+4. 以上三个配置的域名要统一
+5. https://open.weixin.qq.com/connect/oauth2/authorize?appid='+APPID+'&redirect_uri=http://45g958t712.vicp.fun/wx/wxAuth/codeToOpenid&response_type=code&scope=snsapi_base&state=0#wechat_redirect
+6. wx回调地址需要是get
+
+```

@@ -65,6 +65,34 @@ public class WxAuthController {
     }
 
     /**
+     * 使用微信授权code换取openid
+     *
+     * @param request
+     * @param response
+     * @param code
+     * @param appid
+     * @return
+     */
+    @GetMapping("/codeToOpenid")
+    @CrossOrigin
+    @ApiOperation(value = "网页登录-code换取openid",notes = "scope为snsapi_base")
+    public R code2Openid(HttpServletRequest request, HttpServletResponse response, String code, @CookieValue String appid) {
+        try {
+            this.wxMpService.switchoverTo(appid);
+            WxOAuth2AccessToken token = wxMpService.getOAuth2Service().getAccessToken(code);
+            String openid = token.getOpenId();
+            CookieUtil.setCookie(response, "openid", openid, 365 * 24 * 60 * 60);
+            String openidToken = MD5Util.getMd5AndSalt(openid);
+            CookieUtil.setCookie(response, "openidToken", openidToken, 365 * 24 * 60 * 60);
+            return R.ok().put(openid);
+        } catch (WxErrorException e) {
+            logger.error("code换取openid失败", e);
+            return R.error(e.getError().getErrorMsg());
+        }
+    }
+
+
+    /**
      * 使用微信授权code换取用户信息(需scope为 snsapi_userinfo)
      *
      * @param request
